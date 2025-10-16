@@ -1,6 +1,6 @@
 {
 
-    "name": "google/authenticator",
+    "name": "brunodev/google-auth-php",
 
     "description": "Biblioteca PHP que realiza autenticação com o Google utilizando o cliente oficial google-api-php-client, facilitando o processo de login e integração com os serviços e APIs do Google.",
 
