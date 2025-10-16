@@ -1,6 +1,6 @@
 <?php
 
-    namespace app\Library;
+    namespace AuthenticationGoogle\Library;
 
     use Google\Client;
     use GuzzleHttp\Client as GuzzleClient;
@@ -21,25 +21,39 @@
 
         public function init() {
 
+            $path_cert = getenv("GOOGLE_CA_CERT_PATH");
+
+            if ($path_cert && file_exists($path_cert)) {
+
+                $verify = $path_cert;
+
+            } else {
+
+                $verify = true;
+
+            }
+
             $guzzleClient = new GuzzleClient([
 
-                "curl" => [
-
-                    CURLOPT_SSL_VERIFYPEER => false
-
-                ]
+                "verify" => $verify
 
             ]);
 
             $this->client->setHttpClient($guzzleClient);
 
-            $this->client->setAuthConfig("credentials.json");
+            $this->client->setAuthConfig(json_decode(getenv("GOOGLE_CREDENTIALS_JSON"), true));
 
-            $this->client->setRedirectUri("http://localhost:8000");
+            $this->client->setRedirectUri(getenv("GOOGLE_REDIRECT_URI"));
 
-            $this->client->addScope("email");
+            $scopesJson = getenv("GOOGLE_SCOPES");
 
-            $this->client->addScope("profile");
+            $scopesArray = json_decode($scopesJson, true);
+
+            foreach ($scopesArray as $scope) {
+
+                $this->client->addScope($scope);
+
+            }
 
         }
 
@@ -55,11 +69,13 @@
 
                 $this->data = $googleService->userinfo->get();
 
+                $link = $this->client->createAuthUrl();
+
                 return [
 
                     "status" => true,
-                    "data" => $this->data
-
+                    "data" => $this->data,
+                    "link" => $link
                 ];
 
             }
@@ -67,18 +83,13 @@
             return [
 
                 "status" => false,
-                "data" => ""
+                "data" => "",
+                "link" => ""
 
             ];
 
         }
         
-        public function generateAuthLink() {
-
-            return $this->client->createAuthUrl();
-
-        }
-
     }
 
 ?>
