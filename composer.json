@@ -1,0 +1,32 @@
+{
+
+    "name": "bruno/login_google",
+
+    "autoload": {
+
+        "psr-4": {
+
+            "app\\": "app/"
+
+        }
+
+    },
+
+    "authors": [
+
+        {
+
+            "name": "Bruno Gonçalves de Souza",
+            "email": "bruno.gsouza199@gmail.com"
+
+        }
+
+    ],
+
+    "require": {
+
+        "google/apiclient": "^2.18"
+
+    }
+
+}
