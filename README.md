@@ -18,7 +18,7 @@ Biblioteca PHP que realiza autenticação com o Google utilizando o cliente ofic
 Instale via [Composer](https://getcomposer.org/):
 
 ```bash
-composer require seunome/google-auth
+composer require brunodev/google-auth-php
 ```
 
 ---
@@ -78,11 +78,3 @@ if ($authorized["status"]) {
     
 }
 ```
-
----
-
-### ✅ Observações
-
-* **Credenciais**: Nunca versionar `GOOGLE_CREDENTIALS_JSON` no Git. Prefira variáveis de ambiente ou Secret Manager em produção.
-* **Scopes**: Ajuste o JSON para os recursos que você precisa acessar.
-* **Certificado CA**: Mantém a conexão HTTPS segura, especialmente em produção.
