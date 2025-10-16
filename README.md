@@ -6,10 +6,10 @@ Biblioteca PHP que realiza autenticação com o Google utilizando o cliente ofic
 
 ## 🚀 Recursos
 
-- Autenticação OAuth2 com o Google
-- Suporte ao login via conta Google
-- Integração simples com APIs do Google (Drive, Gmail, Calendar, etc.)
-- Baseado no cliente oficial da Google para PHP
+* Autenticação OAuth2 com o Google
+* Suporte ao login via conta Google
+* Integração simples com APIs do Google (Drive, Gmail, Calendar, etc.)
+* Baseado no cliente oficial da Google para PHP
 
 ---
 
@@ -19,3 +19,70 @@ Instale via [Composer](https://getcomposer.org/):
 
 ```bash
 composer require seunome/google-auth
+```
+
+---
+
+## ⚙️ Configuração
+
+A biblioteca depende de algumas **variáveis de ambiente** para funcionar corretamente. Configure-as no seu `.env` ou no ambiente do servidor:
+
+```dotenv
+# Caminho para o certificado CA usado pelo Guzzle (opcional, fallback para padrão do sistema)
+GOOGLE_CA_CERT_PATH=/etc/ssl/certs/ca-certificates.crt
+
+# Credenciais do Google em formato JSON (geradas pelo Google Cloud Console)
+GOOGLE_CREDENTIALS_JSON='{"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----..."}'
+
+# Redirect URI configurado no Google Cloud Console
+GOOGLE_REDIRECT_URI=http://localhost:8000/callback
+
+# Scopes da autenticação, em JSON (uma linha)
+GOOGLE_SCOPES='["email","profile","openid"]'
+```
+
+> Dica: caso `GOOGLE_CA_CERT_PATH` não seja definido, o Guzzle usará o certificado padrão do sistema.
+> Scopes podem ser ajustados conforme os serviços que você deseja acessar.
+
+---
+
+## 📝 Uso básico
+
+```php
+<?php
+
+use AuthenticationGoogle\Library\GoogleClient;
+
+require "../vendor/autoload.php";
+
+// Cria a instância do cliente Google
+$googleClient = new GoogleClient();
+
+// Inicializa o cliente com as variáveis de ambiente
+$googleClient->init();
+
+// Verifica se o usuário já autorizou
+$authorized = $googleClient->authorized();
+
+if ($authorized["status"]) {
+
+    echo "Usuário autorizado: ";
+
+    print_r($authorized["data"]);
+
+} else {
+
+    // Redireciona ou exibe link de autorização
+
+    echo "Link de autorização: " . $authorized["link"];
+    
+}
+```
+
+---
+
+### ✅ Observações
+
+* **Credenciais**: Nunca versionar `GOOGLE_CREDENTIALS_JSON` no Git. Prefira variáveis de ambiente ou Secret Manager em produção.
+* **Scopes**: Ajuste o JSON para os recursos que você precisa acessar.
+* **Certificado CA**: Mantém a conexão HTTPS segura, especialmente em produção.
