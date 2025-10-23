@@ -38,7 +38,13 @@ GOOGLE_CREDENTIALS_JSON='{"type":"service_account","project_id":"...","private_k
 GOOGLE_REDIRECT_URI=http://localhost:8000/callback
 
 # Scopes da autenticação, em JSON (uma linha)
-GOOGLE_SCOPES='["email","profile","openid"]'
+GOOGLE_SCOPES='["email","profile"]'
+
+# ID do cliente no Google.
+GOOGLE_CLIENT_ID=seu_id_aqui
+
+# A chave secreta do cliente.
+GOOGLE_CLIENT_SECRET=seu_secret_aqui
 ```
 
 > Dica: caso `GOOGLE_CA_CERT_PATH` não seja definido, o Guzzle usará o certificado padrão do sistema.
