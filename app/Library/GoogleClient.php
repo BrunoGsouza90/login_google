@@ -9,7 +9,7 @@
 
     class GoogleClient {
 
-        public readonly Client $client;
+        public Client $client;
         
         public userinfo $data;
 
